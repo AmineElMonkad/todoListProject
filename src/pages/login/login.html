@@ -11,23 +11,24 @@
       <ion-list no-lines="">
         <ion-item>
           <ion-label floating>Email</ion-label>
-          <ion-input type="text"></ion-input>
+          <ion-input type="text" [(ngModel)]="user.email"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label floating>Password</ion-label>
-          <ion-input type="password"></ion-input>
+          <ion-input type="password" [(ngModel)]="user.password"></ion-input>
         </ion-item>
         <ion-item>
           <p>Forgot password ? <a>Get here</a></p>
         </ion-item>
-        <button ion-button color="danger" block outline>LOGIN</button>
+        <button ion-button color="danger" (click)="login(user)" block outline>LOGIN</button>
       </ion-list>
       <b>OR</b>
       <button ion-button color="primary" block>
         <ion-icon name="logo-facebook"></ion-icon>
         <div>&nbsp;Login with facebook</div>
       </button>
-      <button ion-button color="danger" block>
+
+      <button ion-button color="danger" (click)="logWithGoogle()" block>
         <ion-icon name="logo-google"></ion-icon>
         <div>&nbsp;Login with google</div>
       </button>

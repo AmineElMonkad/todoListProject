@@ -1,14 +1,27 @@
 <ion-header>
-    <ion-navbar>
-        <ion-title>
-            Ionic Blank Blank
-        </ion-title>
-    </ion-navbar>
+  <ion-navbar color="primary">
+
+    <ion-title>
+      To Do List
+    </ion-title>
+
+    <span style="cursor: pointer;" (click)="logout()">Logout</span>
+  </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-    The world is your oyster.
-    <p>
-        If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-    </p>
+<ion-content>
+  <ion-fab top right>
+    <button ion-fab mini (click)="goToAddPage()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+  <ion-card *ngFor="let list of list$ | async">
+    <!--<img src="img/nin-live.png"/>-->
+    <ion-card-content>
+      <ion-card-title>
+        {{ list.name }}
+      </ion-card-title>
+      <p>
+        {{ list.name }}
+      </p>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
