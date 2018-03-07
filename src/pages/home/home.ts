@@ -5,7 +5,6 @@ import {List} from "../../models/list/list.model";
 import {ListService} from "../../services/list/list.service";
 import {AngularFireAuth} from "angularfire2/auth";
 import {ToastService} from "../../services/toast/toast.service";
-import {AddListPage} from "../add-list/add-list";
 
 @IonicPage()
 @Component({
@@ -18,7 +17,11 @@ export class HomePage {
   uid: string;
   pushPage: any;
 
-  constructor(public navCtrl: NavController, public navParam: NavParams, private list: ListService, private toast: ToastService, private rAuth: AngularFireAuth) {
+  constructor(public navCtrl: NavController,
+              public navParam: NavParams,
+              private list: ListService,
+              private toast: ToastService,
+              private rAuth: AngularFireAuth) {
 
 
     this.uid = this.navParam.get('uid');
@@ -34,7 +37,11 @@ export class HomePage {
   }
 
   goToAddPage() {
-    this.navCtrl.setRoot('AddListPage', { uid: this.uid })
+    this.navCtrl.push('AddListPage', { uid: this.uid });
+  }
+
+  goToItemPage(key: string) {
+    this.navCtrl.push('ItemPage', { idList: key, uid: this.uid });
   }
 
   logout() {

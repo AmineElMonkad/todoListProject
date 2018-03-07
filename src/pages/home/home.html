@@ -1,21 +1,21 @@
 <ion-header>
-  <ion-navbar color="primary">
-
-    <ion-title>
-      To Do List
-    </ion-title>
-
-    <span style="cursor: pointer;" (click)="logout()">Logout</span>
+  <ion-navbar color='primary'>
+    <ion-title>To Do List</ion-title>
+    <ion-buttons start>
+      <button ion-button icon-only (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <ion-fab top right>
+  <ion-fab bottom right>
     <button ion-fab mini (click)="goToAddPage()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
   <ion-card *ngFor="let list of list$ | async">
     <!--<img src="img/nin-live.png"/>-->
-    <ion-card-content>
+    <ion-card-content (click)="goToItemPage(list.key)" >
       <ion-card-title>
         {{ list.name }}
       </ion-card-title>

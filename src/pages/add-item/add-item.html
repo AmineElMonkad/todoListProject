@@ -1,0 +1,23 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Add Item</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+
+    <ion-item>
+      <ion-label stacked>Name</ion-label>
+      <ion-input [(ngModel)]="item.name" type="text"></ion-input>
+    </ion-item>
+
+
+  </ion-list>
+  <div>
+    <button ion-button outline (click)="addItem(item)" color="primary" block style="border-radius: 10px">Add</button>
+  </div>
+</ion-content>

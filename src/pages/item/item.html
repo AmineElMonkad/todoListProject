@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-navbar color='primary'>
+    <!--<ion-buttons start>-->
+      <!--<button ion-button icon-start (click)="goBack()">-->
+        <!--<ion-icon name="arrow-back"></ion-icon>-->
+        <!--Back-->
+      <!--</button>-->
+    <!--</ion-buttons>-->
+    <ion-title>Items</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-fab bottom right>
+    <button ion-fab mini (click)="goToAddItemPage()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+  <ion-card *ngFor="let item of item$ | async">
+    <!--<img src="img/nin-live.png"/>-->
+    <ion-card-content>
+      <ion-card-title>
+        {{ item.name }}
+      </ion-card-title>
+      <p>
+        {{ item.name }}
+      </p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

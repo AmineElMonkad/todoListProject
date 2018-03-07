@@ -6,7 +6,6 @@ import {ToastService} from "../../services/toast/toast.service";
 import * as firebase from "firebase/app";
 import {UserService} from "../../services/user/user.service";
 import {Observable} from "rxjs/Observable";
-import {List} from "../../models/list/list.model";
 
 /**
  * Generated class for the LoginPage page.

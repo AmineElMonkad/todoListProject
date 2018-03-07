@@ -12,7 +12,8 @@ import {AngularFireAuthModule} from "angularfire2/auth";
 import {ToastService} from "../services/toast/toast.service";
 import {ListService} from "../services/list/list.service";
 import {UserService} from "../services/user/user.service";
-import {AngularFirestore, AngularFirestoreModule} from "angularfire2/firestore";
+import {AngularFirestoreModule} from "angularfire2/firestore";
+import {ItemService} from "../services/item/item.service";
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import {AngularFirestore, AngularFirestoreModule} from "angularfire2/firestore";
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ToastService,
     ListService,
-    UserService
+    UserService,
+    ItemService
   ]
 })
 export class AppModule {}
