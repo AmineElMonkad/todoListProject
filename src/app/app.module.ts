@@ -14,6 +14,8 @@ import {ListService} from "../services/list/list.service";
 import {UserService} from "../services/user/user.service";
 import {AngularFirestoreModule} from "angularfire2/firestore";
 import {ItemService} from "../services/item/item.service";
+import {GooglePlus} from "@ionic-native/google-plus";
+import {IonicStorageModule} from "@ionic/storage";
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import {ItemService} from "../services/item/item.service";
     // Import the AngulareFireDatabaseModule to use database intercations
     AngularFireDatabaseModule,
     AngularFirestoreModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -40,7 +43,8 @@ import {ItemService} from "../services/item/item.service";
     ToastService,
     ListService,
     UserService,
-    ItemService
+    ItemService,
+    GooglePlus
   ]
 })
 export class AppModule {}

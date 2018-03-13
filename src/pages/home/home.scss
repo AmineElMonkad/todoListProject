@@ -1,5 +1,52 @@
 page-home {
-  ion-card.card {
-    border-radius: 10px;
+  //ion-card.card {
+  //  border-radius: 10px;
+  //}
+
+
+  .card-background-page {
+
+    ion-card > div {
+      padding-top: 35px;
+      position: relative;
+      background-color: #f4f4f4;
+    }
+
+    .card-title {
+      text-align: center;
+      top: 36%;
+      font-size: 2.0em;
+      width: 100%;
+      font-weight: bold;
+      font-family: "Crimson Text";
+      color: #4b4b4b;
+    }
+
+    .card-subtitle {
+      text-align: center;
+      font-size: 1.0em;
+      top: 52%;
+      width: 100%;
+      margin-top: 5px;
+      color: #8e8e8e;
+    }
+
+    //.trash {
+    //  position: relative;
+    //  top: 26px;
+    //  left: 109px;
+    //  width: 100%;
+    //  padding: 0;
+    //  margin: 0;
+    //}
+    //
+    //.edit {
+    //  position: relative;
+    //  top: 26px;
+    //  left: 95px;
+    //  width: 100%;
+    //  padding: 0;
+    //  margin: 0;
+    //}
   }
 }

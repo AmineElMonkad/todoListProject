@@ -1,7 +1,8 @@
 import {List} from "../list/list.model";
 
 export interface User {
+  key?: string;
   email: string;
   password?: string;
-  list?: List[];
+  lists?: List[];
 }

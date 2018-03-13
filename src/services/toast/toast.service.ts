@@ -10,7 +10,10 @@ export class ToastService {
   }
 
   show(message: string, duration: number = 3000) {
-    return this.toastCtrl.create({ message, duration }).present();
+    return this.toastCtrl.create({
+      message,
+      duration,
+      position: 'top'}).present();
   }
 
 }

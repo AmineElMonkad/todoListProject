@@ -1,0 +1,23 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Edit List</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+
+    <ion-item>
+      <ion-label stacked>Name</ion-label>
+      <ion-input [(ngModel)]="list.name" type="text" value="{{ list.name }}"></ion-input>
+    </ion-item>
+
+
+  </ion-list>
+  <div>
+    <button ion-button outline (click)="editList(list)" color="primary" block style="border-radius: 10px">Edit</button>
+  </div>
+</ion-content>

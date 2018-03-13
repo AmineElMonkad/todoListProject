@@ -9,19 +9,24 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="card-background-page">
   <ion-fab bottom right>
-    <button ion-fab mini (click)="goToAddPage()"><ion-icon name="add"></ion-icon></button>
+    <button ion-fab mini navPush="AddListPage" [navParams]="{ uid: uid }"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
-  <ion-card *ngFor="let list of list$ | async">
-    <!--<img src="img/nin-live.png"/>-->
-    <ion-card-content (click)="goToItemPage(list.key)" >
-      <ion-card-title>
-        {{ list.name }}
-      </ion-card-title>
-      <p>
-        {{ list.name }}
-      </p>
-    </ion-card-content>
+  <ion-card *ngFor="let list of todoList">
+    <div navPush="ItemPage" [navParams]="{ idList: list.key, uid: uid }">
+      <div class="card-title">{{ list.name }}</div>
+      <!--<div class="card-subtitle">72 tasks</div>-->
+      <ion-row no-padding>
+        <ion-col text-center>
+          <button (click)="stopProp()" navPush="EditListPage" [navParams]="{ list: list, uid: uid }" class="edit" icon-left ion-button color="success" clear icon-only>
+            <ion-icon name='md-create' is-active="false"></ion-icon>
+          </button>
+          <button (click)="removeToDoList(list)" class="trash" icon-right ion-button color="danger" clear icon-only>
+            <ion-icon  name='trash' is-active="false"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+    </div>
   </ion-card>
 </ion-content>

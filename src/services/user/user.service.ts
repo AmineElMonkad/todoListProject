@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {AngularFireDatabase} from "angularfire2/database";
 import {User} from "../../models/user/user.model";
+import {List} from "../../models/list/list.model";
 
 
 
@@ -24,6 +25,12 @@ export class UserService {
     let path: string = 'user/' + uid;
     this.listRef = this.db.list<User>(path);
     return this.listRef;
+  }
+
+  editUser(uid: string, user: User) {
+    let path: string = 'user/' + uid;
+    this.listRef = this.db.list<User>(path);
+    return this.listRef.update(uid, user);
   }
 
 }

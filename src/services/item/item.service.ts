@@ -7,7 +7,7 @@ import {List} from "../../models/list/list.model";
 @Injectable()
 export class ItemService {
 
-  private itemRef = this.db.list<List>('todoList');
+  private itemRef = this.db.list<Item>('todoItem');
 
   constructor(private db: AngularFireDatabase) {
 
@@ -27,6 +27,14 @@ export class ItemService {
     let path: string = 'user/' + uid + '/todoList/' + idList + '/todoItem';
     this.itemRef = this.db.list<Item>(path);
     return this.itemRef.push(item);
+  }
+
+  editItem(item: Item) {
+    return this.itemRef.update(item.key, item);
+  }
+
+  removeItem(item: Item) {
+    return this.itemRef.remove(item.key);
   }
 
 }

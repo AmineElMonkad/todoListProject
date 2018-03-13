@@ -1,0 +1,30 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Edit {{ item.name }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+
+    <ion-item>
+      <ion-label stacked>Name</ion-label>
+      <ion-input [(ngModel)]="item.name" type="text" value="{{ item.name }}"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Description</ion-label>
+      <ion-input [(ngModel)]="item.desc" type="text" value="{{ item.desc }}"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Completed</ion-label>
+      <ion-checkbox (click)="addValue($event)" [(ngModel)]="checked" color="secondary"></ion-checkbox>
+    </ion-item>
+
+  </ion-list>
+  <div>
+    <button ion-button outline (click)="editItem(item)" color="primary" block style="border-radius: 10px">Edit</button>
+  </div>
+</ion-content>

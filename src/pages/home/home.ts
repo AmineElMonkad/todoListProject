@@ -15,19 +15,40 @@ export class HomePage {
 
   list$: Observable<List[]>;
   uid: string;
-  pushPage: any;
+  todoList: any;
 
   constructor(public navCtrl: NavController,
               public navParam: NavParams,
-              private list: ListService,
+              private listService: ListService,
               private toast: ToastService,
               private rAuth: AngularFireAuth) {
 
 
     this.uid = this.navParam.get('uid');
-    this.pushPage = 'AddListPage';
 
-    this.list$ = this.list.getList(this.uid).snapshotChanges().map(
+
+    // if(this.uid) {
+    //   storage.set('uid', this.uid);
+    //   console.log("uid is not null : " + this.uid);
+    // } else {
+    //   storage.get('uid').then((val) => {
+    //     console.log("uid now is  null : " + this.uid);
+    //     this.uid = val;
+    //     console.log("uid now is not null : " + this.uid);
+    //   });
+    // }
+
+    this.getList();
+
+    this.list$.subscribe(result => {
+      this.todoList = result;
+    });
+
+  }
+
+
+  getList() {
+    this.list$ = this.listService.getList(this.uid).snapshotChanges().map(
       changes => {
         return changes.map(c => ({
           key: c.payload.key, ...c.payload.val()
@@ -36,19 +57,21 @@ export class HomePage {
     );
   }
 
-  goToAddPage() {
-    this.navCtrl.push('AddListPage', { uid: this.uid });
-  }
-
-  goToItemPage(key: string) {
-    this.navCtrl.push('ItemPage', { idList: key, uid: this.uid });
-  }
 
   logout() {
     this.rAuth.auth.signOut().then(() => {
       this.toast.show('Good Bye !');
       this.navCtrl.setRoot('LoginPage');
     });
+  }
+
+  stopProp() {
+    event.stopPropagation();
+  }
+
+  removeToDoList(list: List) {
+    this.listService.removeList(list);
+    event.stopPropagation();
   }
 
 }

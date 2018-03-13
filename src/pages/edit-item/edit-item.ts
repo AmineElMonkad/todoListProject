@@ -5,7 +5,7 @@ import {ItemService} from "../../services/item/item.service";
 import {ToastService} from "../../services/toast/toast.service";
 
 /**
- * Generated class for the AddItemPage page.
+ * Generated class for the EditItemPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -13,10 +13,10 @@ import {ToastService} from "../../services/toast/toast.service";
 
 @IonicPage()
 @Component({
-  selector: 'page-add-item',
-  templateUrl: 'add-item.html',
+  selector: 'page-edit-item',
+  templateUrl: 'edit-item.html',
 })
-export class AddItemPage {
+export class EditItemPage {
 
   item: Item = {
     name: '',
@@ -24,27 +24,39 @@ export class AddItemPage {
   }
 
   idList: string = '';
-
   uid: string = '';
+
+  checked : boolean = true;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private itemService: ItemService,
               private toast: ToastService) {
-    this.idList = this.navParams.get('idList');
+    this.idList = navParams.get('idList');
     this.uid = navParams.get('uid');
+    this.item = this.navParams.get('item');
+    this.checked = this.item.complete;
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddItemPage');
+    console.log('ionViewDidLoad EditItemPage');
   }
 
-  addItem(item: Item) {
-    this.item.complete = false;
-    this.itemService.addItem(item, this.idList, this.uid).then(ref => {
-      this.toast.show(`${item.name} added !`);
-      this.navCtrl.setRoot('ItemPage', {key: ref.key, uid: this.uid, idList: this.idList});
-    })
+  editItem(item: Item) {
+    if(this.checked)
+      this.item.complete = true;
+    else
+      this.item.complete = false;
+    this.itemService.editItem(item).then( res => {
+      this.toast.show(`${item.name} edited !`);
+      this.navCtrl.setRoot('ItemPage', {idList: this.idList, uid: this.uid});
+    });
+  }
+
+  addValue(e): void {
+    var isChecked = e.currentTarget.checked;
+    console.log(this.checked);//it is working !!!
+
   }
 
 }

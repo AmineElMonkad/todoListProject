@@ -5,6 +5,7 @@ import {ToastService} from "../../services/toast/toast.service";
 import {Observable} from "rxjs/Observable";
 import {Item} from "../../models/item/item.model";
 import {ItemService} from "../../services/item/item.service";
+import {List} from "../../models/list/list.model";
 
 /**
  * Generated class for the ItemPage page.
@@ -24,6 +25,8 @@ export class ItemPage {
 
   idList: string = '';
   uid: string = '';
+  back: boolean;
+  Btns: boolean = false;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -32,6 +35,7 @@ export class ItemPage {
               private itemService: ItemService) {
     this.idList = navParams.get('idList');
     this.uid = navParams.get('uid');
+    this.back = this.navCtrl.canGoBack();
 
     this.item$ = this.itemService.getItems(this.uid, this.idList).snapshotChanges().map(
       changes => {
@@ -56,6 +60,18 @@ export class ItemPage {
 
   goToAddItemPage() {
     this.navCtrl.push('AddItemPage', { idList: this.idList, uid: this.uid });
+  }
+
+  goBack() {
+    this.navCtrl.setRoot('HomePage', { uid: this.uid });
+  }
+
+  toogleBtn() {
+    this.Btns = !this.Btns;
+  }
+
+  removeToDoItem(item: Item) {
+    this.itemService.removeItem(item);
   }
 
 }

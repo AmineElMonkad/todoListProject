@@ -1,11 +1,11 @@
 <ion-header>
   <ion-navbar color='primary'>
-    <!--<ion-buttons start>-->
-      <!--<button ion-button icon-start (click)="goBack()">-->
-        <!--<ion-icon name="arrow-back"></ion-icon>-->
-        <!--Back-->
-      <!--</button>-->
-    <!--</ion-buttons>-->
+    <ion-buttons start *ngIf="this.back">
+      <button ion-button icon-start (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+        Back
+      </button>
+    </ion-buttons>
     <ion-title>Items</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="logout()">
@@ -19,15 +19,32 @@
   <ion-fab bottom right>
     <button ion-fab mini (click)="goToAddItemPage()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
-  <ion-card *ngFor="let item of item$ | async">
-    <!--<img src="img/nin-live.png"/>-->
-    <ion-card-content>
-      <ion-card-title>
-        {{ item.name }}
-      </ion-card-title>
-      <p>
-        {{ item.name }}
-      </p>
-    </ion-card-content>
-  </ion-card>
+  <div *ngFor="let item of item$ | async">
+    <ion-card (click)="selectedItem = (selectedItem != item) ? item : ' '">
+      <!--<img src="img/nin-live.png"/>-->
+      <ion-card-content>
+        <ion-card-title>
+          {{ item.name }}
+        </ion-card-title>
+        <p>
+          {{ item.desc }}
+        </p>
+        <p style="text-align: right">
+          <span *ngIf=" item.complete == true" class="complete">Completed !</span>
+          <span *ngIf=" item.complete  == false" class="notComplete">Not Completed !</span>
+        </p>
+      </ion-card-content>
+    </ion-card>
+    <div *ngIf="selectedItem == item" class="myBtn">
+      <button navPush="EditItemPage" [navParams]="{ uid: uid, item: item, idList: idList }" ion-button color="secondary" outline icon-only>
+        <ion-icon name='md-create' is-active="false"></ion-icon>
+      </button>
+      <button (click)="removeToDoItem(item)" ion-button color="danger" outline icon-only>
+        <ion-icon name='trash' is-active="false"></ion-icon>
+      </button>
+      <button ion-button color="primary" outline icon-only>
+        <ion-icon name='md-share' is-active="false"></ion-icon>
+      </button>
+    </div>
+  </div>
 </ion-content>
