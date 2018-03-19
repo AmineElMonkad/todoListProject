@@ -1,0 +1,23 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Share List With</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+
+    <ion-item>
+      <ion-label stacked>Email</ion-label>
+      <ion-input [(ngModel)]="user.email" type="text"></ion-input>
+    </ion-item>
+
+
+  </ion-list>
+  <div>
+    <button ion-button outline (click)="getUserByEmail(user.email)" color="primary" block style="border-radius: 10px">Add</button>
+  </div>
+</ion-content>

@@ -118,7 +118,6 @@ export class LoginPage {
       );
 
       console.log("uid1 : " + this.uid);
-      console.log(this.user);
 
       this.user$.subscribe(result => {
         if(result.length == 0) {

@@ -3,7 +3,6 @@
     <ion-buttons start *ngIf="this.back">
       <button ion-button icon-start (click)="goBack()">
         <ion-icon name="arrow-back"></ion-icon>
-        Back
       </button>
     </ion-buttons>
     <ion-title>Items</ion-title>
@@ -36,15 +35,15 @@
       </ion-card-content>
     </ion-card>
     <div *ngIf="selectedItem == item" class="myBtn">
-      <button navPush="EditItemPage" [navParams]="{ uid: uid, item: item, idList: idList }" ion-button color="secondary" outline icon-only>
+      <button navPush="EditItemPage" [navParams]="{ uid: uid, item: item, idList: idList, uidOrigin: uidOrigin }" ion-button color="secondary" outline icon-only>
         <ion-icon name='md-create' is-active="false"></ion-icon>
       </button>
       <button (click)="removeToDoItem(item)" ion-button color="danger" outline icon-only>
         <ion-icon name='trash' is-active="false"></ion-icon>
       </button>
-      <button ion-button color="primary" outline icon-only>
-        <ion-icon name='md-share' is-active="false"></ion-icon>
-      </button>
+      <!--<button ion-button color="primary" outline icon-only>-->
+        <!--<ion-icon name='md-share' is-active="false"></ion-icon>-->
+      <!--</button>-->
     </div>
   </div>
 </ion-content>

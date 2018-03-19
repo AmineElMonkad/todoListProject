@@ -25,6 +25,7 @@ export class ItemPage {
 
   idList: string = '';
   uid: string = '';
+  uidOrigin: string = '';
   back: boolean;
   Btns: boolean = false;
 
@@ -35,6 +36,8 @@ export class ItemPage {
               private itemService: ItemService) {
     this.idList = navParams.get('idList');
     this.uid = navParams.get('uid');
+    this.uidOrigin = navParams.get('uidOrigin');
+    console.log("this " + this.idList + " " + this.uid);
     this.back = this.navCtrl.canGoBack();
 
     this.item$ = this.itemService.getItems(this.uid, this.idList).snapshotChanges().map(
@@ -59,11 +62,11 @@ export class ItemPage {
   }
 
   goToAddItemPage() {
-    this.navCtrl.push('AddItemPage', { idList: this.idList, uid: this.uid });
+    this.navCtrl.push('AddItemPage', { idList: this.idList, uid: this.uid, uidOrigin: this.uidOrigin });
   }
 
   goBack() {
-    this.navCtrl.setRoot('HomePage', { uid: this.uid });
+    this.navCtrl.setRoot('HomePage', { uid: this.uidOrigin });
   }
 
   toogleBtn() {
@@ -72,6 +75,7 @@ export class ItemPage {
 
   removeToDoItem(item: Item) {
     this.itemService.removeItem(item);
+    this.navCtrl.setRoot('ItemPage', {idList: this.idList, uid: this.uid, uidOrigin: this.uidOrigin});
   }
 
 }

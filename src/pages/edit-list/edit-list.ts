@@ -22,7 +22,7 @@ export class EditListPage {
     name: ''
   }
 
-  uid: string = ''
+  uid: string = '';
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,

@@ -24,6 +24,7 @@ export class AddItemPage {
   }
 
   idList: string = '';
+  uidOrigin: string = '';
 
   uid: string = '';
 
@@ -33,6 +34,8 @@ export class AddItemPage {
               private toast: ToastService) {
     this.idList = this.navParams.get('idList');
     this.uid = navParams.get('uid');
+
+    this.uidOrigin = navParams.get('uidOrigin');
   }
 
   ionViewDidLoad() {
@@ -43,7 +46,7 @@ export class AddItemPage {
     this.item.complete = false;
     this.itemService.addItem(item, this.idList, this.uid).then(ref => {
       this.toast.show(`${item.name} added !`);
-      this.navCtrl.setRoot('ItemPage', {key: ref.key, uid: this.uid, idList: this.idList});
+      this.navCtrl.setRoot('ItemPage', {key: ref.key, uid: this.uid, idList: this.idList, uidOrigin: this.uidOrigin});
     })
   }
 

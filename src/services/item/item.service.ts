@@ -15,7 +15,7 @@ export class ItemService {
 
   getListRef(uid: string, idList: string) {
     let path: string = 'user/' + uid + '/todoList/' + idList + '/todoItem';
-    return this.db.list<List>(path);
+    return this.db.list<Item>(path);
   }
 
   getItems(uid: string, idList: string) {

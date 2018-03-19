@@ -26,6 +26,8 @@ export class EditItemPage {
   idList: string = '';
   uid: string = '';
 
+  uidOrigin: string = '';
+
   checked : boolean = true;
 
   constructor(public navCtrl: NavController,
@@ -36,6 +38,7 @@ export class EditItemPage {
     this.uid = navParams.get('uid');
     this.item = this.navParams.get('item');
     this.checked = this.item.complete;
+    this.uidOrigin = navParams.get('uidOrigin');
   }
 
   ionViewDidLoad() {
@@ -49,7 +52,7 @@ export class EditItemPage {
       this.item.complete = false;
     this.itemService.editItem(item).then( res => {
       this.toast.show(`${item.name} edited !`);
-      this.navCtrl.setRoot('ItemPage', {idList: this.idList, uid: this.uid});
+      this.navCtrl.setRoot('ItemPage', {idList: this.idList, uid: this.uid, uidOrigin: this.uidOrigin});
     });
   }
 
