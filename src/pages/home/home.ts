@@ -1,11 +1,13 @@
-import {Component, NgZone} from '@angular/core';
-import {Events, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {AlertController, IonicPage, ModalController, NavController, NavParams, Platform} from 'ionic-angular';
 import {Observable} from "rxjs/Observable";
 import {List} from "../../models/list/list.model";
 import {ListService} from "../../services/list/list.service";
 import {AngularFireAuth} from "angularfire2/auth";
 import {ToastService} from "../../services/toast/toast.service";
 import {Subscription} from "rxjs/Subscription";
+import {ListPage} from "../list/list";
+import {SharedListPage} from "../shared-list/shared-list";
 
 @IonicPage()
 @Component({
@@ -17,19 +19,13 @@ export class HomePage {
   list$: Observable<List[]>;
   lisShared$: Observable<any[]>;
   sharedList$: Observable<List[]>;
-  sharedList=[];
-  sharedListt: any = {
-    idUser: '',
-    idList: ''
-  }
-  sharedListDisplay=[];
+  sharedList = [];
   uid: string;
   todoList: any;
   idUserOrigin: string = '';
-  nameOrigin: string = '';
-  exist: boolean = false;
-  taille = 0;
-
+  tab1: any = 'ListPage';
+  tab2: any;
+  lis: string = "Your";
 
   private subscription: Subscription = new Subscription();
 
@@ -39,65 +35,65 @@ export class HomePage {
               private listService: ListService,
               private toast: ToastService,
               private rAuth: AngularFireAuth,
-              public events: Events,
-              private zone: NgZone) {
+              public alertCtrl: AlertController,
+              private modalCtrl: ModalController,
+              private platform: Platform) {
 
-
+    this.tab1 = ListPage;
+    this.tab2 = SharedListPage;
     this.uid = this.navParam.get('uid');
+    this.sharedList.splice(0, this.sharedList.length);
 
-    // if(this.uid) {
-    //   storage.set('uid', this.uid);
-    //   console.log("uid is not null : " + this.uid);
-    // } else {
-    //   storage.get('uid').then((val) => {
-    //     console.log("uid now is  null : " + this.uid);
-    //     this.uid = val;
-    //     console.log("uid now is not null : " + this.uid);
-    //   });
-    // }
+    platform.registerBackButtonAction(() => {
+      this.navCtrl.setRoot('HomePage', { uid: this.uid });
+      console.log("backPressed 1");
+    },1);
 
     this.getList();
 
     this.list$.subscribe(result => {
-      result.forEach(result => {
-
-        console.log("hereeee : " + result.userDes);
-      });
       this.todoList = result;
-
-
     });
 
-    // this.events.subscribe('updateScreen', () => {
-    //   this.zone.run(() => {
-    //     console.log('force update the screen');
-    //   });
-    // });
 
     this.getListShared();
 
     this.lisShared$.subscribe(result => {
-      console.log(result.length);
-      this.taille = result.length;
-      console.log("taille : " + this.taille);
+      let lnth = result.length;
+      console.log("lnth : " + lnth);
       result.forEach(result => {
         this.idUserOrigin = result.idUser;
         this.getSharedList(result.idList, result.idUser);
         this.sharedList$.subscribe(res => {
-              this.sharedList.push(res[0]);
+          this.sharedList.push(res[0]);
+          console.log(this.sharedList);
+          console.log("length : " + this.sharedList.length);
+          // if (this.sharedList.length > lnth)
+          //   this.sharedList.pop();
         });
       });
+
       this.sharedList.splice(0, this.sharedList.length);
-      // while(this.sharedList.length > 0) {
-      //   this.sharedList.pop();
-      // }
-      // this.ngOnDestroy();
-      //this.events.publish('updateScreen');
     });
 
 
+    // this.modalCtrl.create(HomePage).onDidDismiss(() => {
+    //
+    // })
 
   }
+
+  doRefresh(refresher) {
+    this.navCtrl.setRoot('HomePage', { uid: this.uid });
+    // console.log('Begin async operation', refresher);
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      refresher.complete();
+    }, 5000);
+  }
+
+
+  /* Get reference of shared list */
 
   getSharedList(idList: string, idUser: string) {
     this.sharedList$ = this.listService.getSharedList(idList, idUser).snapshotChanges().map(
@@ -110,6 +106,8 @@ export class HomePage {
 
   }
 
+  /* Get List Shared from other users */
+
   getListShared() {
     this.lisShared$ = this.listService.getListOfShared(this.uid).snapshotChanges().map(
       changes => {
@@ -120,6 +118,7 @@ export class HomePage {
     );
   }
 
+  /* Get TodoList */
 
   getList() {
     this.list$ = this.listService.getList(this.uid).snapshotChanges().map(
@@ -131,6 +130,7 @@ export class HomePage {
     );
   }
 
+  /* Logout */
 
   logout() {
     this.rAuth.auth.signOut().then(() => {
@@ -139,20 +139,56 @@ export class HomePage {
     });
   }
 
-  stopProp() {
-    event.stopPropagation();
-  }
+  /* Remove List */
 
-
-  removeToDoList(list: List,) {
+  removeToDoList(list: List) {
     console.log("REMOVE " + list.userDes + " " + list.key);
     this.listService.removeSharedList(list.userDes, list.userListDes);
     this.listService.removeList(list, this.uid);
     event.stopPropagation();
   }
 
+  /* Destroy subscribtion */
+
   public ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
+
+  /* Stop Propagation when 2 events are launched */
+
+  stopProp() {
+    event.stopPropagation();
+  }
+
+  // addList() {
+  //   let prompt = this.alertCtrl.create({
+  //     title: 'Add new list',
+  //     inputs: [
+  //       {
+  //         name: 'Name',
+  //         placeholder: 'Name'
+  //       },
+  //       {
+  //         name: 'Description',
+  //         placeholder: 'Description'
+  //       },
+  //     ],
+  //     buttons: [
+  //       {
+  //         text: 'Cancel',
+  //         handler: data => {
+  //           console.log('Cancel clicked');
+  //         }
+  //       },
+  //       {
+  //         text: 'Save',
+  //         handler: data => {
+  //           console.log('Saved clicked');
+  //         }
+  //       }
+  //     ]
+  //   });
+  //   prompt.present();
+  // }
 
 }

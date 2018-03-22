@@ -85,4 +85,5 @@
     <plugin name="cordova-plugin-googleplus" spec="^5.2.1">
         <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.25015540621-dc11671u54uuuqid9vlhr013vgvjbnvv" />
     </plugin>
+    <plugin name="cordova-plugin-speechrecognition" spec="^1.2.0" />
 </widget>

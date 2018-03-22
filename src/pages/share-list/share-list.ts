@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {User} from "../../models/user/user.model";
 import {UserService} from "../../services/user/user.service";
 import {Observable} from "rxjs/Observable";
@@ -51,7 +51,8 @@ export class ShareListPage {
               private userService: UserService,
               private rAuth: AngularFireAuth,
               private toast: ToastService,
-              private listService: ListService) {
+              private listService: ListService,
+              private view: ViewController) {
     this.idList = navParams.get('idList');
     this.list = navParams.get('list');
   }
@@ -96,7 +97,8 @@ export class ShareListPage {
           this.listOrigin.userDes = key;
           this.listService.editList(this.listOrigin, this.rAuth.auth.currentUser.uid).then(res => {
             this.toast.show(`List shared with success !`);
-            this.navCtrl.setRoot('HomePage', {uid: this.rAuth.auth.currentUser.uid});
+            this.view.dismiss();
+            // this.navCtrl.setRoot('HomePage', {uid: this.rAuth.auth.currentUser.uid});
           });
         });
         console.log("1");

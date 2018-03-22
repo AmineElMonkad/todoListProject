@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {Item} from "../../models/item/item.model";
 import {ItemService} from "../../services/item/item.service";
 import {ToastService} from "../../services/toast/toast.service";
@@ -33,7 +33,8 @@ export class EditItemPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private itemService: ItemService,
-              private toast: ToastService) {
+              private toast: ToastService,
+              private view: ViewController) {
     this.idList = navParams.get('idList');
     this.uid = navParams.get('uid');
     this.item = this.navParams.get('item');
@@ -52,7 +53,8 @@ export class EditItemPage {
       this.item.complete = false;
     this.itemService.editItem(item).then( res => {
       this.toast.show(`${item.name} edited !`);
-      this.navCtrl.setRoot('ItemPage', {idList: this.idList, uid: this.uid, uidOrigin: this.uidOrigin});
+      this.view.dismiss();
+      // this.navCtrl.setRoot('ItemPage', {idList: this.idList, uid: this.uid, uidOrigin: this.uidOrigin});
     });
   }
 

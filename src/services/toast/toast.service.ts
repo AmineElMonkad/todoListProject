@@ -9,7 +9,7 @@ export class ToastService {
 
   }
 
-  show(message: string, duration: number = 3000) {
+  show(message: string, duration: number = 3000): Promise<void> {
     return this.toastCtrl.create({
       message,
       duration,

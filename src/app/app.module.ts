@@ -16,10 +16,12 @@ import {AngularFirestoreModule} from "angularfire2/firestore";
 import {ItemService} from "../services/item/item.service";
 import {GooglePlus} from "@ionic-native/google-plus";
 import {IonicStorageModule} from "@ionic/storage";
+import {LoginService} from "../services/login/login.service";
+import {SpeechRecognition} from "@ionic-native/speech-recognition";
 
 @NgModule({
   declarations: [
-    MyApp
+    MyApp,
   ],
   imports: [
     BrowserModule,
@@ -44,7 +46,9 @@ import {IonicStorageModule} from "@ionic/storage";
     ListService,
     UserService,
     ItemService,
-    GooglePlus
+    GooglePlus,
+    LoginService,
+    SpeechRecognition
   ]
 })
 export class AppModule {}

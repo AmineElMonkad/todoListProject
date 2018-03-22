@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {ChangeDetectorRef, Component} from '@angular/core';
+import {IonicPage, NavController, NavParams, Platform, ViewController} from 'ionic-angular';
 import {List} from "../../models/list/list.model";
 import {ListService} from "../../services/list/list.service";
 import {ToastService} from "../../services/toast/toast.service";
 import {User} from "../../models/user/user.model";
-import {Observable} from "rxjs/Observable";
-import {UserService} from "../../services/user/user.service";
+import {SpeechRecognition} from "@ionic-native/speech-recognition";
 
 /**
  * Generated class for the AddListPage page.
@@ -22,41 +21,57 @@ import {UserService} from "../../services/user/user.service";
 export class AddListPage {
 
   list: List = {
-    name: ''
+    name: '',
+    created_at: 0
   }
 
   uid: string = '';
   user: User;
-  user$: Observable<User[]>;
+  matches: Array<string> = [];
+  isSpeechAvailable = false;
+  isListening = false;
+  choosedValue: string = '';
+  isFinish: boolean = false;
 
   constructor(public navCtrl: NavController,
               public navParam: NavParams,
               private listService: ListService,
               private toast: ToastService,
-              private userService: UserService) {
+              private view: ViewController,
+              private speechRecognition: SpeechRecognition,
+              private cd: ChangeDetectorRef,
+              private platform:  Platform) {
     this.uid = this.navParam.get('uid');
-    this.user$ = this.userService.getUser(this.uid).snapshotChanges().map(
-      changes => {
-        return changes.map(c => ({
-          key: c.payload.key, ...c.payload.val()
-        }))
-      }
-    );
-
-    var that = this;
-    console.log("imdsds");
-    console.log(this.user$);
-    this.user$.subscribe(result => {
-      console.log("fuck ionic");
-      result.forEach(function (value) {
-        console.log("fuck this shit");
-        that.user.key = value.key;
-        that.user.email = value.email;
-        that.user.password = value.password;
-        console.log("fuck this shit");
-        console.log("hohookodfodfk " + that.user);
-      })
-    });
+    // console.log("from add list " + this.uid);
+    // this.user$ = this.userService.getUser(this.uid).snapshotChanges().map(
+    //   changes => {
+    //     return changes.map(c => ({
+    //       key: c.payload.key, ...c.payload.val()
+    //     }))
+    //   }
+    // );
+    //
+    // var that = this;
+    // console.log("imdsds");
+    // console.log(this.user$);
+    // this.user$.subscribe(result => {
+    //   console.log("fuck ionic");
+    //   result.forEach(function (value) {
+    //     console.log("fuck this shit");
+    //     that.user.key = value.key;
+    //     that.user.email = value.email;
+    //     that.user.password = value.password;
+    //     console.log("fuck this shit");
+    //     console.log("hohookodfodfk " + that.user);
+    //   })
+    // });
+    if (platform.is('cordova')) {
+      platform.ready().then(() => {
+        // Check feature available
+        this.speechRecognition.isRecognitionAvailable()
+          .then((available: boolean) => this.isSpeechAvailable = available)
+      });
+    }
   }
 
   ionViewDidLoad() {
@@ -64,19 +79,59 @@ export class AddListPage {
   }
 
   addList(list: List) {
-    // const date = new Date();
-    // this.list.date = date;
-    console.log(this.user);
-    // this.user.list.push(list);
-    // this.userService.editUser(this.uid, this.user).then(ref => {
-    //     this.toast.show(`${list.name} added !`);
-    //     this.navCtrl.setRoot('HomePage', {uid: this.uid});
-    //   });
-    this.listService.addList(list, this.uid).then(ref => {
-      this.toast.show(`${list.name} added !`);
-      this.navCtrl.setRoot('HomePage', {key: ref.key, uid: this.uid});
-    })
+    list.created_at = Date.now();
+    if(list.name != '') {
+      this.listService.addList(list, this.uid).then(() => {
+        this.toast.show(`${list.name} added !`);
+        this.view.dismiss();
+        // this.navCtrl.setRoot('HomePage', {uid: this.uid});
+      });
+    }
   }
+
+  // startRec() {
+  //   this.speechRecognition.startListening(options)
+  //     .subscribe(
+  //       (matches: Array<string>) => console.log(matches),
+  //       (onerror) => console.log('error:', onerror)
+  //     )
+  // }
+
+  startListening(): void {
+    this.isListening = true;
+    this.matches = [];
+    let options = {
+      language: 'en-US',
+      matches: 5
+    }
+
+    // Start the recognition process
+    this.speechRecognition.startListening(options)
+      .subscribe(
+        (matches: Array<string>) => {
+          this.isListening = false;
+          this.matches = matches;
+          this.isFinish = true;
+          this.cd.detectChanges();
+        },
+        (onerror) => {
+          this.isListening = false;
+          console.log(onerror.message);
+          this.cd.detectChanges();
+        }
+      )
+
+  }
+
+  public stopListening(): void {
+    this.speechRecognition.stopListening();
+  }
+
+  chooseIt(match: string) {
+    this.choosedValue = match;
+    this.cd.detectChanges();
+  }
+
 
 
 }

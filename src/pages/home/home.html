@@ -7,44 +7,71 @@
       </button>
     </ion-buttons>
   </ion-navbar>
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="lis">
+      <ion-segment-button value="Your">
+        Your List
+      </ion-segment-button>
+      <ion-segment-button value="Not">
+        List Shared With You
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content class="card-background-page">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
   <ion-fab bottom right>
-    <button ion-fab mini navPush="AddListPage" [navParams]="{ uid: uid }"><ion-icon name="add"></ion-icon></button>
+    <button ion-fab mini navPush="AddListPage" [navParams]="{ uid: uid }">
+      <ion-icon name="add"></ion-icon>
+    </button>
   </ion-fab>
-  <ion-title class="title">Your Own List : </ion-title>
-  <ion-card *ngFor="let list of todoList">
-    <div navPush="ItemPage" [navParams]="{ idList: list.key, uid: uid, uidOrigin: uid }">
-      <div class="card-title">{{ list.name }}</div>
-      <!--<div class="card-subtitle">72 tasks</div>-->
-      <ion-row no-padding>
-        <ion-col text-center>
-          <button (click)="stopProp()" navPush="EditListPage" [navParams]="{ list: list, uid: uid }" class="edit" icon-left ion-button color="success" clear icon-only>
-            <ion-icon name='md-create' is-active="false"></ion-icon>
-          </button>
-          <button (click)="removeToDoList(list)" class="trash" icon-right ion-button color="danger" clear icon-only>
-            <ion-icon  name='trash' is-active="false"></ion-icon>
-          </button>
-          <button ion-button (click)="stopProp()" navPush="ShareListPage" [navParams]="{ list: list, uid: uid, uidOrigin: uid  }" color="primary" outline icon-only clear>
-            <ion-icon name='md-share' is-active="false"></ion-icon>
-          </button>
-        </ion-col>
-      </ion-row>
-    </div>
-  </ion-card>
-  <ion-title class="title" *ngIf="sharedList">List shared with you : </ion-title>
-  <div *ngFor="let listSh of sharedList">
-    <ion-card *ngIf="listSh">
-        <div navPush="ItemPage" class="shared" [navParams]="{ idList: listSh?.key, uid: idUserOrigin, uidOrigin: uid }">
-          <div class="card-title">{{ listSh?.name }}</div>
+  <div [ngSwitch]="lis">
+    <div *ngSwitchCase="'Your'">
+      <ion-card *ngFor="let list of todoList | reversePipe">
+        <div navPush="ItemPage" [navParams]="{ idList: list.key, uid: uid, uidOrigin: uid }">
+          <div class="card-title">{{ list.name }}</div>
           <!--<div class="card-subtitle">72 tasks</div>-->
           <ion-row no-padding>
             <ion-col text-center>
-              <!--<span>Shared with you By {{ nameOrigin }}</span>-->
+              <button (click)="stopProp()" navPush="EditListPage" [navParams]="{ list: list, uid: uid }" class="edit"
+                      icon-left ion-button color="success" clear icon-only>
+                <ion-icon name='md-create' is-active="false"></ion-icon>
+              </button>
+              <button (click)="removeToDoList(list)" class="trash" icon-right ion-button color="danger" clear icon-only>
+                <ion-icon name='trash' is-active="false"></ion-icon>
+              </button>
+              <button ion-button (click)="stopProp()" navPush="ShareListPage"
+                      [navParams]="{ list: list, uid: uid, uidOrigin: uid  }" color="primary" outline icon-only clear>
+                <ion-icon name='md-share' is-active="false"></ion-icon>
+              </button>
             </ion-col>
           </ion-row>
         </div>
-    </ion-card>
+      </ion-card>
+    </div>
+    <div *ngSwitchCase="'Not'">
+      <div *ngFor="let listSh of sharedList">
+        <ion-card *ngIf="listSh">
+          <div navPush="ItemPage" class="shared"
+               [navParams]="{ idList: listSh?.key, uid: idUserOrigin, uidOrigin: uid }">
+            <div class="card-title">{{ listSh?.name }}</div>
+            <!--<div class="card-subtitle">72 tasks</div>-->
+            <ion-row no-padding>
+              <ion-col text-center>
+                <!--<span>Shared with you By {{ nameOrigin }}</span>-->
+              </ion-col>
+            </ion-row>
+          </div>
+        </ion-card>
+      </div>
+    </div>
   </div>
 </ion-content>

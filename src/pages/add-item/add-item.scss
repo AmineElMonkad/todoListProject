@@ -1,3 +1,21 @@
 page-add-item {
+  .titlee {
+    font-size: 15px;
+    text-align: center;
+  }
 
+  .ch {
+    text-align: center;
+  }
+
+  .ch:hover {
+    color: #679ffc;
+    cursor: pointer;
+  }
+
+  ion-icon {
+    font-size: 25px; //Preferred size here
+    cursor: pointer;
+    position: absolute;
+  }
 }

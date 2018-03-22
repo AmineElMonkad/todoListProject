@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {IonicPage, Navbar, NavController, NavParams, Platform} from 'ionic-angular';
 import {AngularFireAuth} from "angularfire2/auth";
 import {ToastService} from "../../services/toast/toast.service";
 import {Observable} from "rxjs/Observable";
 import {Item} from "../../models/item/item.model";
 import {ItemService} from "../../services/item/item.service";
-import {List} from "../../models/list/list.model";
 
 /**
  * Generated class for the ItemPage page.
@@ -33,12 +32,13 @@ export class ItemPage {
               public navParams: NavParams,
               private toast: ToastService,
               private rAuth: AngularFireAuth,
-              private itemService: ItemService) {
-    this.idList = navParams.get('idList');
-    this.uid = navParams.get('uid');
-    this.uidOrigin = navParams.get('uidOrigin');
-    console.log("this " + this.idList + " " + this.uid);
+              private itemService: ItemService,
+              private platform: Platform) {
+    this.idList = this.navParams.get('idList');
+    this.uid = this.navParams.get('uid');
+    this.uidOrigin = this.navParams.get('uidOrigin');
     this.back = this.navCtrl.canGoBack();
+
 
     this.item$ = this.itemService.getItems(this.uid, this.idList).snapshotChanges().map(
       changes => {
@@ -48,11 +48,19 @@ export class ItemPage {
       }
     );
 
+    let backAction =  platform.registerBackButtonAction(() => {
+      console.log("second");
+      this.navCtrl.pop();
+      backAction();
+    },2)
+
+
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ItemPage');
   }
+
 
   logout() {
     this.rAuth.auth.signOut().then(() => {
@@ -62,11 +70,11 @@ export class ItemPage {
   }
 
   goToAddItemPage() {
-    this.navCtrl.push('AddItemPage', { idList: this.idList, uid: this.uid, uidOrigin: this.uidOrigin });
+    this.navCtrl.push('AddItemPage', {idList: this.idList, uid: this.uid, uidOrigin: this.uidOrigin});
   }
 
   goBack() {
-    this.navCtrl.setRoot('HomePage', { uid: this.uidOrigin });
+    this.navCtrl.setRoot('HomePage', {uid: this.uidOrigin});
   }
 
   toogleBtn() {
@@ -75,7 +83,7 @@ export class ItemPage {
 
   removeToDoItem(item: Item) {
     this.itemService.removeItem(item);
-    this.navCtrl.setRoot('ItemPage', {idList: this.idList, uid: this.uid, uidOrigin: this.uidOrigin});
+    // this.navCtrl.setRoot('ItemPage', {idList: this.idList, uid: this.uid, uidOrigin: this.uidOrigin});
   }
 
 }

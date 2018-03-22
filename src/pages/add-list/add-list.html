@@ -6,7 +6,7 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title>addList</ion-title>
   </ion-navbar>
 
@@ -14,14 +14,38 @@
 
 
 <ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-11>
+        <ion-list>
+          <ion-item>
+            <ion-label stacked>Name</ion-label>
+            <ion-input [(ngModel)]="list.name" type="text" value="{{ choosedValue }}">
+            </ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col>
+        <ion-icon (tap)="(isListening) ? stopListening() : startListening()" name="mic" [ngStyle]="{'color': '#488aff', 'bottom': '26px'}"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <ion-list>
-
-    <ion-item>
-      <ion-label stacked>Name</ion-label>
-      <ion-input [(ngModel)]="list.name" type="text"></ion-input>
+    <ion-title *ngIf="isFinish"><span class="titlee">Choose a value :</span></ion-title>
+    <!--<ion-item>-->
+    <!--<ion-label>Gender</ion-label>-->
+    <!--<ion-select [(ngModel)]="choosedValue">-->
+    <!--<ion-option *ngFor="let bar of barca"  value="bar">{{ bar }}</ion-option>-->
+    <!--</ion-select>-->
+    <!--</ion-item>-->
+    <ion-item *ngFor="let match of matches">
+      <ion-label (click)="chooseIt(match)">
+        <div class="ch">{{ match }}</div>
+      </ion-label>
     </ion-item>
-
-
+    <!--<div *ngFor="let match of matches">-->
+    <!--<div (click)="chooseIt(match)">{{ match }}</div>-->
+    <!--</div>-->
   </ion-list>
   <div>
     <button ion-button outline (click)="addList(list)" color="primary" block style="border-radius: 10px">Add</button>
