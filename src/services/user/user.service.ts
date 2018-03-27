@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
-import {AngularFireDatabase, AngularFireList, AngularFireObject} from "angularfire2/database";
+import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
 import {User} from "../../models/user/user.model";
-import {List} from "../../models/list/list.model";
 
 
 
@@ -11,7 +10,6 @@ export class UserService {
 
 
   private listRef = this.db.list<User>('user');
-  private userRef: AngularFireList<any>;
   private listReff;
 
 

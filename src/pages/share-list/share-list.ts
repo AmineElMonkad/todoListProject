@@ -34,12 +34,13 @@ export class ShareListPage {
 
   listOrigin: List = {
     userListDes: '',
-    userDes: ''
+    userDes: '',
   };
 
   sharedList: any = {
     idUser: '',
-    idList: ''
+    idList: '',
+    pending: true,
   }
 
   idList: string = '';
@@ -66,6 +67,9 @@ export class ShareListPage {
   getUserByEmail(email: string) {
     var exist: boolean = false;
     var key: string = '';
+    if(this.rAuth.auth.currentUser.email == email) {
+      return this.toast.show('You can not share the list with yourself !');
+    }
     this.user$ = this.userService.getUsers().snapshotChanges().map(
       changes => {
         return changes.map(c => ({
@@ -89,16 +93,12 @@ export class ShareListPage {
         this.sharedList.idUser = this.rAuth.auth.currentUser.uid;
         this.listService.addSharedList(this.sharedList, key).then(ref => {
           console.log(ref.key);
-          // this.shUs.idFriend = key;
-          // this.shUs.idShList = ref.key;
           this.listOrigin.key =  this.list.key;
           this.listOrigin.userListDes = ref.key;
-          console.log(this.listOrigin.userListDes);
           this.listOrigin.userDes = key;
-          this.listService.editList(this.listOrigin, this.rAuth.auth.currentUser.uid).then(res => {
+          this.listService.editList(this.listOrigin, this.rAuth.auth.currentUser.uid).then(() => {
             this.toast.show(`List shared with success !`);
             this.view.dismiss();
-            // this.navCtrl.setRoot('HomePage', {uid: this.rAuth.auth.currentUser.uid});
           });
         });
         console.log("1");

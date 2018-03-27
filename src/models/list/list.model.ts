@@ -7,4 +7,6 @@ export interface List {
   userDes?: string;
   userListDes?: string;
   created_at?: number;
+  pending?: boolean;
+  idShList?: string;
 }

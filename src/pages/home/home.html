@@ -13,7 +13,7 @@
         Your List
       </ion-segment-button>
       <ion-segment-button value="Not">
-        List Shared With You
+        List Shared With You <ion-badge *ngIf="isPending > 0" color="danger" style="position: absolute;bottom: 20px; padding: 3px;">{{ isPending }}</ion-badge>
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
@@ -63,13 +63,15 @@
           <div navPush="ItemPage" class="shared"
                [navParams]="{ idList: listSh?.key, uid: idUserOrigin, uidOrigin: uid }">
             <div class="card-title">{{ listSh?.name }}</div>
-            <!--<div class="card-subtitle">72 tasks</div>-->
-            <ion-row no-padding>
-              <ion-col text-center>
-                <!--<span>Shared with you By {{ nameOrigin }}</span>-->
-              </ion-col>
-            </ion-row>
           </div>
+          <ion-row no-padding text-center *ngIf="listSh?.pending">
+            <ion-col (click)="accept(listSh?.idShList)" style="background-color: #bcfbcf;">
+              <ion-icon md="md-checkmark" style="font-size: 30px; color: limegreen"></ion-icon>
+            </ion-col>
+            <ion-col (click)="decline(listSh?.idShList)" style="background-color: #ffa9a9;">
+              <ion-icon md="md-close" style="font-size: 30px; color: #ef2929"></ion-icon>
+            </ion-col>
+          </ion-row>
         </ion-card>
       </div>
     </div>

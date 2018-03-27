@@ -18,6 +18,10 @@ export class ListService {
     return this.db.list<List>('user/' + uid + '/todoList', ref => ref.orderByChild('created_at'));
   }
 
+  getListSharedWithOthers(uid: string, idList: string) {
+    return this.db.list('user/' + uid + '/todoList/' + idList + '/listShared');
+  }
+
   removeSharedList(userDes: string, userListDes: string): Promise<void> {
     return this.db.object('user/' + userDes + '/sharedList/' + userListDes).remove();
   }
@@ -40,7 +44,15 @@ export class ListService {
   }
 
   editList(list: List, uid: string) {
-    return this.db.list<List>('user/' + uid + '/todoList').update(list.key, list);
+    return this.db.list<List>('user/' + uid + '/todoList/' + list.key + '/listShared').push(list);
+  }
+
+  editSh(uid: string, idListSh: string, listSh: any) {
+    return this.db.list('user/' + uid + '/sharedList').update(idListSh, listSh);
+  }
+
+  removeSh(uid: string, idListSh: string) {
+    return this.db.list('user/' + uid + '/sharedList').remove(idListSh);
   }
 
   removeList(list: List, uid: string) {

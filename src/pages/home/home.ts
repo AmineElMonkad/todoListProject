@@ -1,13 +1,11 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, ModalController, NavController, NavParams, Platform} from 'ionic-angular';
+import {AlertController, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {Observable} from "rxjs/Observable";
 import {List} from "../../models/list/list.model";
 import {ListService} from "../../services/list/list.service";
 import {AngularFireAuth} from "angularfire2/auth";
 import {ToastService} from "../../services/toast/toast.service";
 import {Subscription} from "rxjs/Subscription";
-import {ListPage} from "../list/list";
-import {SharedListPage} from "../shared-list/shared-list";
 
 @IonicPage()
 @Component({
@@ -19,13 +17,16 @@ export class HomePage {
   list$: Observable<List[]>;
   lisShared$: Observable<any[]>;
   sharedList$: Observable<List[]>;
+  listSharedWithOthers$ :Observable<any[]>;
   sharedList = [];
   uid: string;
   todoList: any;
   idUserOrigin: string = '';
-  tab1: any = 'ListPage';
-  tab2: any;
+  isPending: number = 0;
   lis: string = "Your";
+  listOrigin = {
+    pending: false
+  };
 
   private subscription: Subscription = new Subscription();
 
@@ -34,20 +35,9 @@ export class HomePage {
               public navParam: NavParams,
               private listService: ListService,
               private toast: ToastService,
-              private rAuth: AngularFireAuth,
-              public alertCtrl: AlertController,
-              private modalCtrl: ModalController,
-              private platform: Platform) {
+              private rAuth: AngularFireAuth) {
 
-    this.tab1 = ListPage;
-    this.tab2 = SharedListPage;
     this.uid = this.navParam.get('uid');
-    this.sharedList.splice(0, this.sharedList.length);
-
-    platform.registerBackButtonAction(() => {
-      this.navCtrl.setRoot('HomePage', { uid: this.uid });
-      console.log("backPressed 1");
-    },1);
 
     this.getList();
 
@@ -59,28 +49,38 @@ export class HomePage {
     this.getListShared();
 
     this.lisShared$.subscribe(result => {
-      let lnth = result.length;
-      console.log("lnth : " + lnth);
       result.forEach(result => {
         this.idUserOrigin = result.idUser;
         this.getSharedList(result.idList, result.idUser);
         this.sharedList$.subscribe(res => {
-          this.sharedList.push(res[0]);
-          console.log(this.sharedList);
-          console.log("length : " + this.sharedList.length);
-          // if (this.sharedList.length > lnth)
-          //   this.sharedList.pop();
+          if(typeof(res[0]) != 'undefined') {
+            if (!this.sharedList.find(value => value.key == res[0].key)) {
+              res[0].pending = result.pending;
+              res[0].idShList = result.key;
+              if(res[0].pending)
+                this.isPending++;
+              this.sharedList.push(res[0]);
+            }
+          }
         });
       });
-
+      this.isPending = 0;
       this.sharedList.splice(0, this.sharedList.length);
     });
 
+  }
 
-    // this.modalCtrl.create(HomePage).onDidDismiss(() => {
-    //
-    // })
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad ItemPage');
+  }
 
+  // ionViewWillEnter() {
+  //   if(this.navCtrl.last().id == 'ItemPage')
+  //     this.navCtrl.setRoot('HomePage', { uid: this.uid });
+  // }
+
+  ionViewDidEnter() {
+    console.log('ionViewDidEnter ItemPage');
   }
 
   doRefresh(refresher) {
@@ -130,6 +130,16 @@ export class HomePage {
     );
   }
 
+  getListSharedWithOthers(uid: string, idList: string) {
+    this.listSharedWithOthers$ = this.listService.getListSharedWithOthers(uid, idList).snapshotChanges().map(
+      changes => {
+        return changes.map(c => ({
+          key: c.payload.key, ...c.payload.val()
+        }))
+      }
+    );
+  }
+
   /* Logout */
 
   logout() {
@@ -142,8 +152,13 @@ export class HomePage {
   /* Remove List */
 
   removeToDoList(list: List) {
-    console.log("REMOVE " + list.userDes + " " + list.key);
-    this.listService.removeSharedList(list.userDes, list.userListDes);
+    this.getListSharedWithOthers(this.uid, list.key);
+    this.listSharedWithOthers$.subscribe(result => {
+      result.forEach(res => {
+        this.listService.removeSharedList(res.userDes, res.userListDes);
+      });
+    });
+    // this.listService.removeSharedList(list.userDes, list.userListDes);
     this.listService.removeList(list, this.uid);
     event.stopPropagation();
   }
@@ -157,6 +172,16 @@ export class HomePage {
   /* Stop Propagation when 2 events are launched */
 
   stopProp() {
+    event.stopPropagation();
+  }
+
+  accept(idShList: string) {
+    this.listService.editSh(this.uid, idShList, this.listOrigin);
+    event.stopPropagation();
+  }
+
+  decline(idShList: string) {
+    this.listService.removeSh(this.uid, idShList);
     event.stopPropagation();
   }
 
