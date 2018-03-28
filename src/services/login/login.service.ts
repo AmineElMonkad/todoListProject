@@ -34,8 +34,8 @@ export class LoginService {
 
       return await this.rAuth.auth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(gplusUser.idToken)).then(res => {
         this.user.email = this.rAuth.auth.currentUser.email;
-        this.user.photoURL = res.user.photoURL;
-        this.user.displayName = res.user.displayName;
+        this.user.photoURL = this.rAuth.auth.currentUser.photoURL;
+        this.user.displayName = this.rAuth.auth.currentUser.displayName;
         this.userService.addUser(this.rAuth.auth.currentUser.uid, this.user);
 
       }).catch(err => {

@@ -36,7 +36,6 @@ export class HomePage {
               private listService: ListService,
               private toast: ToastService,
               private rAuth: AngularFireAuth) {
-    console.log(rAuth.auth.currentUser);
     // this.uid = this.navParam.get('uid');
     this.uid = rAuth.auth.currentUser.uid;
     this.getList();
