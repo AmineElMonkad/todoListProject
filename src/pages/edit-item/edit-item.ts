@@ -25,9 +25,7 @@ export class EditItemPage {
 
   idList: string = '';
   uid: string = '';
-
   uidOrigin: string = '';
-
   checked : boolean = true;
 
   constructor(public navCtrl: NavController,

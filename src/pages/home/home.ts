@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Observable} from "rxjs/Observable";
 import {List} from "../../models/list/list.model";
 import {ListService} from "../../services/list/list.service";
@@ -19,7 +19,7 @@ export class HomePage {
   sharedList$: Observable<List[]>;
   listSharedWithOthers$ :Observable<any[]>;
   sharedList = [];
-  uid: string;
+  uid: string = '';
   todoList: any;
   idUserOrigin: string = '';
   isPending: number = 0;
@@ -36,9 +36,9 @@ export class HomePage {
               private listService: ListService,
               private toast: ToastService,
               private rAuth: AngularFireAuth) {
-
-    this.uid = this.navParam.get('uid');
-
+    console.log(rAuth.auth.currentUser);
+    // this.uid = this.navParam.get('uid');
+    this.uid = rAuth.auth.currentUser.uid;
     this.getList();
 
     this.list$.subscribe(result => {
@@ -84,7 +84,7 @@ export class HomePage {
   }
 
   doRefresh(refresher) {
-    this.navCtrl.setRoot('HomePage', { uid: this.uid });
+    this.navCtrl.setRoot('HomePage');
     // console.log('Begin async operation', refresher);
     setTimeout(() => {
       console.log('Async operation has ended');
@@ -184,36 +184,5 @@ export class HomePage {
     this.listService.removeSh(this.uid, idShList);
     event.stopPropagation();
   }
-
-  // addList() {
-  //   let prompt = this.alertCtrl.create({
-  //     title: 'Add new list',
-  //     inputs: [
-  //       {
-  //         name: 'Name',
-  //         placeholder: 'Name'
-  //       },
-  //       {
-  //         name: 'Description',
-  //         placeholder: 'Description'
-  //       },
-  //     ],
-  //     buttons: [
-  //       {
-  //         text: 'Cancel',
-  //         handler: data => {
-  //           console.log('Cancel clicked');
-  //         }
-  //       },
-  //       {
-  //         text: 'Save',
-  //         handler: data => {
-  //           console.log('Saved clicked');
-  //         }
-  //       }
-  //     ]
-  //   });
-  //   prompt.present();
-  // }
 
 }

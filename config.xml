@@ -86,4 +86,6 @@
         <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.25015540621-dc11671u54uuuqid9vlhr013vgvjbnvv" />
     </plugin>
     <plugin name="cordova-plugin-speechrecognition" spec="^1.2.0" />
+    <plugin name="cordova-plugin-qrscanner" spec="^2.5.0" />
+    <plugin name="cordova-plugin-camera" spec="^4.0.2" />
 </widget>

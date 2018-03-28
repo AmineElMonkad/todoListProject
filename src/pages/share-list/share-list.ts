@@ -8,6 +8,7 @@ import {ToastService} from "../../services/toast/toast.service";
 import {List} from "../../models/list/list.model";
 import {ListService} from "../../services/list/list.service";
 import {Subscription} from "rxjs/Subscription";
+import {QRScanner, QRScannerStatus} from "@ionic-native/qr-scanner";
 
 /**
  * Generated class for the ShareListPage page.
@@ -53,7 +54,8 @@ export class ShareListPage {
               private rAuth: AngularFireAuth,
               private toast: ToastService,
               private listService: ListService,
-              private view: ViewController) {
+              private view: ViewController,
+              private qrScanner: QRScanner) {
     this.idList = navParams.get('idList');
     this.list = navParams.get('list');
   }
@@ -115,6 +117,24 @@ export class ShareListPage {
       //   console.log(providers.user);
       // }
       // });
+  }
+
+  scanCode() {
+    this.toast.show("lhafid lah");
+    this.qrScanner.prepare().then((status: QRScannerStatus) => {
+        if (status.authorized) {
+          this.qrScanner.show();
+          let scanSub = this.qrScanner.scan().subscribe((text: string) => {
+            console.log('Scanned something', text);
+            this.toast.show('Scanned something' + text);
+            this.user.email = text;
+            this.qrScanner.hide(); // hide camera preview
+            scanSub.unsubscribe(); // stop scanning
+          });
+
+        }
+
+      }).catch((e: any) => this.toast.show(e));
   }
 
   public ngOnDestroy(): void {

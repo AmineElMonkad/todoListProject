@@ -4,6 +4,8 @@ export interface User {
   key?: string;
   email: string;
   password?: string;
+  photoURL?: string;
+  displayName?: string;
   lists?: List[];
   sharedList?: any;
 }

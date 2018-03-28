@@ -18,6 +18,8 @@ import {GooglePlus} from "@ionic-native/google-plus";
 import {IonicStorageModule} from "@ionic/storage";
 import {LoginService} from "../services/login/login.service";
 import {SpeechRecognition} from "@ionic-native/speech-recognition";
+import {QRScanner} from "@ionic-native/qr-scanner";
+import {Camera} from "@ionic-native/camera";
 
 @NgModule({
   declarations: [
@@ -32,7 +34,7 @@ import {SpeechRecognition} from "@ionic-native/speech-recognition";
     AngularFireDatabaseModule,
     AngularFirestoreModule,
     AngularFireAuthModule,
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -48,7 +50,9 @@ import {SpeechRecognition} from "@ionic-native/speech-recognition";
     ItemService,
     GooglePlus,
     LoginService,
-    SpeechRecognition
+    SpeechRecognition,
+    QRScanner,
+    Camera
   ]
 })
 export class AppModule {}

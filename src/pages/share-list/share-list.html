@@ -1,23 +1,29 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Share List With</ion-title>
+    <ion-title>Share List</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-  <ion-list>
-
-    <ion-item>
-      <ion-label stacked>Email</ion-label>
-      <ion-input [(ngModel)]="user.email" type="text"></ion-input>
-    </ion-item>
-
-
-  </ion-list>
+<ion-content padding style="background: none transparent;">
+  <ion-row>
+    <ion-col col-11>
+      <ion-list>
+        <ion-item>
+          <ion-label stacked>Email</ion-label>
+          <ion-input [(ngModel)]="user.email" type="text"></ion-input>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+    <ion-col>
+      <ion-icon (click)="scanCode()" name="md-qr-scanner" [ngStyle]="{'color': '#488aff', 'bottom': '26px'}"></ion-icon>
+    </ion-col>
+  </ion-row>
   <div>
-    <button ion-button outline (click)="getUserByEmail(user.email)" color="primary" block style="border-radius: 10px">Add</button>
+    <button ion-button outline (click)="getUserByEmail(user.email)" color="primary" block style="border-radius: 10px">
+      Add
+    </button>
   </div>
 </ion-content>

@@ -49,8 +49,8 @@ export class AddItemPage {
     this.uid = navParams.get('uid');
 
     this.uidOrigin = navParams.get('uidOrigin');
-    if (platform.is('cordova')) {
-      platform.ready().then(() => {
+    if (this.platform.is('cordova')) {
+      this.platform.ready().then(() => {
         // Check feature available
         this.speechRecognition.isRecognitionAvailable()
           .then((available: boolean) => this.isSpeechAvailable = available)

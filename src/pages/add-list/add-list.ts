@@ -42,31 +42,9 @@ export class AddListPage {
               private cd: ChangeDetectorRef,
               private platform:  Platform) {
     this.uid = this.navParam.get('uid');
-    // console.log("from add list " + this.uid);
-    // this.user$ = this.userService.getUser(this.uid).snapshotChanges().map(
-    //   changes => {
-    //     return changes.map(c => ({
-    //       key: c.payload.key, ...c.payload.val()
-    //     }))
-    //   }
-    // );
-    //
-    // var that = this;
-    // console.log("imdsds");
-    // console.log(this.user$);
-    // this.user$.subscribe(result => {
-    //   console.log("fuck ionic");
-    //   result.forEach(function (value) {
-    //     console.log("fuck this shit");
-    //     that.user.key = value.key;
-    //     that.user.email = value.email;
-    //     that.user.password = value.password;
-    //     console.log("fuck this shit");
-    //     console.log("hohookodfodfk " + that.user);
-    //   })
-    // });
-    if (platform.is('cordova')) {
-      platform.ready().then(() => {
+
+    if (this.platform.is('cordova')) {
+      this.platform.ready().then(() => {
         // Check feature available
         this.speechRecognition.isRecognitionAvailable()
           .then((available: boolean) => this.isSpeechAvailable = available)
@@ -89,13 +67,6 @@ export class AddListPage {
     }
   }
 
-  // startRec() {
-  //   this.speechRecognition.startListening(options)
-  //     .subscribe(
-  //       (matches: Array<string>) => console.log(matches),
-  //       (onerror) => console.log('error:', onerror)
-  //     )
-  // }
 
   startListening(): void {
     this.isListening = true;

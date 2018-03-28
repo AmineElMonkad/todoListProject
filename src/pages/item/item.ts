@@ -1,5 +1,5 @@
-import {Component, ViewChild} from '@angular/core';
-import {IonicPage, Navbar, NavController, NavParams, Platform} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {AngularFireAuth} from "angularfire2/auth";
 import {ToastService} from "../../services/toast/toast.service";
 import {Observable} from "rxjs/Observable";
@@ -32,8 +32,7 @@ export class ItemPage {
               public navParams: NavParams,
               private toast: ToastService,
               private rAuth: AngularFireAuth,
-              private itemService: ItemService,
-              private platform: Platform) {
+              private itemService: ItemService) {
     this.idList = this.navParams.get('idList');
     this.uid = this.navParams.get('uid');
     this.uidOrigin = this.navParams.get('uidOrigin');
@@ -47,12 +46,6 @@ export class ItemPage {
         }))
       }
     );
-
-    let backAction =  platform.registerBackButtonAction(() => {
-      console.log("second");
-      this.navCtrl.pop();
-      backAction();
-    },2)
 
 
   }
