@@ -73,10 +73,6 @@ export class HomePage {
     console.log('ionViewDidLoad ItemPage');
   }
 
-  // ionViewWillEnter() {
-  //   if(this.navCtrl.last().id == 'ItemPage')
-  //     this.navCtrl.setRoot('HomePage', { uid: this.uid });
-  // }
 
   ionViewDidEnter() {
     console.log('ionViewDidEnter ItemPage');

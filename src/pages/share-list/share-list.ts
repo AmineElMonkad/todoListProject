@@ -94,7 +94,6 @@ export class ShareListPage {
         this.sharedList.idList = this.list.key;
         this.sharedList.idUser = this.rAuth.auth.currentUser.uid;
         this.listService.addSharedList(this.sharedList, key).then(ref => {
-          console.log(ref.key);
           this.listOrigin.key =  this.list.key;
           this.listOrigin.userListDes = ref.key;
           this.listOrigin.userDes = key;
@@ -109,14 +108,6 @@ export class ShareListPage {
       }
     });
 
-
-      // function(providers) {
-      // if(providers.length == 0) {
-      //   alert("There's no user with this email !")
-      // } else {
-      //   console.log(providers.user);
-      // }
-      // });
   }
 
   scanCode() {
